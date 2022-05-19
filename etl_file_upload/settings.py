@@ -11,10 +11,16 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import environ
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env()
+
+path_to_env_file = os.path.join(BASE_DIR, '.env')
+env.read_env(path_to_env_file)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -77,11 +83,11 @@ WSGI_APPLICATION = 'etl_file_upload.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'etl_uploader',
-        'USER': 'serg',
-        'PASSWORD': '123',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME': env.str('DB_NAME'),
+        'USER': env.str('DB_USER'),
+        'PASSWORD': env.str('PASSWORD'),
+        'HOST': env.str('DB_HOST',  default='localhost'),
+        'PORT': env.str('DB_PORT', default='5432'),
         'OPTIONS': {
             'connect_timeout': 10,
             'options': '-c statement_timeout=15000ms',
