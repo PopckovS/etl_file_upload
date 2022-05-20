@@ -2,10 +2,30 @@ import logging
 import owncloud
 from django.conf import settings
 from owncloud import HTTPResponseError
+import shutil
+
 logger = logging.getLogger(__name__)
 
 
-def owncloud_document_download(path: str = None) -> str:
+def download_document(src: str, dst: str) -> str:
+    """
+    Скопировать файл в указанную директорию.
+    :param src: str путь к откуда скопировать файл.
+    :param dst: str путь куда сохранить файл.
+    :return: str путь к сохраненному файлу.
+    """
+    logger.info('Скачиваем файл...')
+    try:
+        path = shutil.copyfile(src, dst)
+        logger.info('Файл успешно скачен')
+    except Exception as e:
+        logger.info('Скачать файл {src}  удалось'.format(src=src))
+        logging.exception(e)
+
+    return path
+
+
+def owncloud_document_download(path: str) -> str:
     """
     Скачивает файл с OwnCloud.
     :param path: str путь куда сохранить файл.
