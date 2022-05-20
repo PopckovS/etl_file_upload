@@ -137,3 +137,94 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# ---------------------------
+# OWN CLOUD
+# ---------------------------
+OWN_CLOUD_PASSWORD = env.str('OWN_CLOUD_PASSWORD')
+OWN_CLOUD_DOMAIN = env.str('OWN_CLOUD_DOMAIN')
+OWN_CLOUD_LOGIN = env.str('OWN_CLOUD_LOGIN')
+
+
+# ---------------------------
+# FILE SYNCHRONIZING
+# ---------------------------
+SOURCE_SHEET_NAME = env.str('SOURCE_SHEET_NAME')
+SOURCE_FILE = env.str('SOURCE_FILE')
+SKIP_ROWS = env.str('SKIP_ROWS')
+
+
+# --------------------
+# LOGGING
+# --------------------
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': (
+                    '%(asctime)s [%(process)d] [%(levelname)s] ' +
+                    'pathname=%(pathname)s lineno=%(lineno)s ' +
+                    'funcname=%(funcName)s %(message)s'
+            ),
+            'datefmt': '%Y-%m-%d %H:%M:%S',
+        },
+        'simple': {
+            'format': '%(asctime)s [%(levelname)s] %(pathname)s [%(lineno)s] %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S',
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue'
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        'console-verbose': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': 'INFO',
+        },
+        'security': {
+            'handlers': ['console-verbose'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
+    'root': {
+        'level': 'DEBUG',
+        'handlers': ['console']
+    }
+}
+
+
+# --------------------
+# SYNCH A
+# --------------------
+FIELDS_TRANSFORM_NONE = []
+FIELDS_TRANSLATE = {}
+FIELDS_IGNORE = []
+FIELDS_CREATE = {}
+FIELDS_DATE = []
+FIELDS_LINK = {}
+
+
+# --------------------
+# SYNCH B
+# --------------------
+
